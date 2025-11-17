@@ -9,12 +9,12 @@ export interface User {
   profile_image?: string;
 }
 
-export interface LoginDTO {
+export interface ILogin {
   email: string;
   password: string;
 }
 
-export interface SignupDTO {
+export interface ISignup {
   first_name: string;
   last_name: string;
   email: string;
@@ -24,5 +24,12 @@ export interface SignupDTO {
 
 export interface AuthResponse {
   access: string;
-  user: User;
+  refresh: string;
+}
+
+export interface SignupResponse {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
 }

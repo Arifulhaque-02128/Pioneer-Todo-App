@@ -27,44 +27,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
-      loadUser();
+      loadUser(storedToken);
     } else {
       setLoading(false);
     }
   }, []);
 
-  const loadUser = async () => {
+  const loadUser = async (authToken: string) => {
     try {
-      const userData = await authAPI.getCurrentUser();
-      console.log("User :::", userData)
+      setLoading(true);
+      const userData = await authAPI.getCurrentUser(authToken);
+      // console.log("User loaded successfully :::", userData);
       setUser(userData);
     } catch (error) {
+      console.error("Failed to load user:", error);
       localStorage.removeItem('token');
       setToken(null);
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (email: string, password: string) => {
-    const response = await authAPI.login({ email, password });
-    // console.log("%c 💊: login -> response ", "font-size:16px;background-color:#704515;color:white;", response)
-    localStorage.setItem('token', response.access);
-    setToken(response.access);
-    setUser(response.user);
-    router.push('/todos');
+    setLoading(true);
+    try {
+      const response = await authAPI.login({ email, password });
+      localStorage.setItem('token', response.access);
+      setToken(response.access);
+
+      const userData = await authAPI.getCurrentUser(response.access);
+      setUser(userData);
+      
+      router.push('/todos');
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signup = async (data: any) => {
-    const response = await authAPI.signup(data);
-    localStorage.setItem('token', response.access);
-    setToken(response.access);
-    setUser(response.user);
-    router.push('/todos');
+    setLoading(true);
+    try {
+      const signupResponse = await authAPI.signup(data);
+      // console.log("Signup response:::", signupResponse);
+
+      await login(data.email, data.password);
+      
+    } catch (error) {
+      console.error("Signup error:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
-    // await authAPI.logout();
+    await authAPI.logout();
     setToken(null);
     setUser(null);
     router.push('/login');

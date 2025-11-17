@@ -7,13 +7,13 @@ import { useRouter, usePathname } from 'next/navigation';
 
 export const Sidebar: React.FC = () => {
   const { user, 
-    // logout 
+    logout 
   } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   const handleLogout = async () => {
-    // await logout();
+    await logout();
   };
 
   return (
