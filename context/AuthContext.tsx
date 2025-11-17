@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (data: any) => Promise<void>;
   logout: () => Promise<void>;
+  updateUser: (profileData: any) => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -37,7 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       const userData = await authAPI.getCurrentUser(authToken);
-      // console.log("User loaded successfully :::", userData);
       setUser(userData);
     } catch (error) {
       console.error("Failed to load user:", error);
@@ -54,8 +54,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await authAPI.login({ email, password });
       localStorage.setItem('token', response.access);
+      // Set cookie for middleware
+      document.cookie = `token=${response.access}; path=/; max-age=${30 * 24 * 60 * 60}`; // 30 days
       setToken(response.access);
-
       const userData = await authAPI.getCurrentUser(response.access);
       setUser(userData);
       
@@ -71,10 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       const signupResponse = await authAPI.signup(data);
-      // console.log("Signup response:::", signupResponse);
-
       await login(data.email, data.password);
-      
     } catch (error) {
       console.error("Signup error:", error);
       throw error;
@@ -90,6 +88,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     router.push('/login');
   };
 
+  const updateUser = async (profileData: any) => {
+    setLoading(true);
+    try {
+      const updatedUser = await authAPI.updateProfile(profileData);
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -99,6 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         signup,
         logout,
+        updateUser,
         isAuthenticated: !!token,
       }}
     >

@@ -1,42 +1,104 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Camera, Upload, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function ProfilePage() {
-
-    const { user } = useAuth();
-    const [formData, setFormData] = useState({
+  const { user, updateUser } = useAuth();
+  const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     address: '',
     contactNumber: '',
     birthday: '',
-    profileImage: ''
-    });
+    bio: '',
+  });
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
+  useEffect(() => {
     if (user) {
-        setFormData({
+      setFormData({
         firstName: user.first_name || '',
         lastName: user.last_name || '',
         email: user.email || '',
         address: user.address || '',
         contactNumber: user.contact_number || '',
         birthday: user.birthday || '',
-        profileImage: user.profile_image || ''
-        });
+        bio: user.bio || '',
+      });
+      setPreviewImage(user.profile_image || '');
     }
-    }, [user]);
+  }, [user]);
 
-    // console.log('Profile Data:', user);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('Profile update:', formData);
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    try {
+      const updateData: any = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        address: formData.address,
+        contact_number: formData.contactNumber,
+        birthday: formData.birthday,
+        bio: formData.bio,
+      };
+
+      if (profileImage) {
+        updateData.profile_image = profileImage;
+      }
+
+      await updateUser(updateData);
+      setSuccessMessage('Profile updated successfully!');
+      setProfileImage(null);
+      
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Failed to update profile. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancel = () => {
+    // Reset form to original user data
+    if (user) {
+      setFormData({
+        firstName: user.first_name || '',
+        lastName: user.last_name || '',
+        email: user.email || '',
+        address: user.address || '',
+        contactNumber: user.contact_number || '',
+        birthday: user.birthday || '',
+        bio: user.bio || '',
+      });
+      setPreviewImage(user.profile_image || '');
+      setProfileImage(null);
+      setErrorMessage('');
+      setSuccessMessage('');
+    }
+  };
 
   return (
     <div className="p-8 text-black">
@@ -44,23 +106,43 @@ export default function ProfilePage() {
         Account Information
       </h1>
 
+      {successMessage && (
+        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg max-w-4xl">
+          {successMessage}
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg max-w-4xl">
+          {errorMessage}
+        </div>
+      )}
+
       <div className="bg-white rounded-lg p-8 max-w-4xl">
         <div className="flex items-center gap-6 mb-8 border border-gray-400 rounded-lg p-6 max-w-xl">
-          <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center relative">
-            {formData?.profileImage ? (
+          <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
+            {previewImage ? (
               <img
-                src={formData.profileImage}
+                src={previewImage}
                 alt="Profile"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-full"
               />
             ) : (
               <User size={40} className="text-gray-400" />
             )}
-            <div className="absolute bottom-0 right-0 bg-blue-500 p-2 rounded-full">
-              <Camera size={16} className="text-white" />
-            </div>
           </div>
-          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 cursor-pointer">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 cursor-pointer"
+          >
             <Upload size={18} />
             Upload New Photo
           </button>
@@ -96,10 +178,12 @@ export default function ProfilePage() {
             <label className="block text-sm font-medium mb-2">Email</label>
             <input
               type="email"
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-400 rounded-lg bg-gray-100 cursor-not-allowed"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              disabled
+              readOnly
             />
+            <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
@@ -139,16 +223,32 @@ export default function ProfilePage() {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium mb-2">Bio</label>
+            <textarea
+              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              rows={3}
+              placeholder="Tell us about yourself..."
+              value={formData.bio}
+              onChange={(e) =>
+                setFormData({ ...formData, bio: e.target.value })
+              }
+            />
+          </div>
+
           <div className="flex gap-4 pt-4 justify-center">
             <button
               type="submit"
-              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+              disabled={isSubmitting}
+              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Save Changes
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
             <button
               type="button"
-              className="px-8 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer"
+              onClick={handleCancel}
+              disabled={isSubmitting}
+              className="px-8 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer disabled:opacity-50"
             >
               Cancel
             </button>

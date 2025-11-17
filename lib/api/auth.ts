@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ILogin, ISignup, AuthResponse, SignupResponse } from '@/lib/types/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app.pioneeralpha.com';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -10,7 +10,6 @@ const api = axios.create({
   },
 });
 
-// Add token to requests
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -55,7 +54,6 @@ export const authAPI = {
   },
 
   logout: async (): Promise<void> => {
-    // await api.post('/api/auth/logout');
     localStorage.removeItem('token');
   },
 
@@ -67,6 +65,33 @@ export const authAPI = {
     } : {};
     
     const { data } = await api.get('/api/users/me/', config);
+    return data;
+  },
+
+  updateProfile: async (profileData: {
+    first_name?: string;
+    last_name?: string;
+    address?: string;
+    contact_number?: string;
+    birthday?: string;
+    bio?: string;
+    profile_image?: File | null;
+  }) => {
+    const formData = new FormData();
+    
+    if (profileData.first_name) formData.append('first_name', profileData.first_name);
+    if (profileData.last_name) formData.append('last_name', profileData.last_name);
+    if (profileData.address) formData.append('address', profileData.address);
+    if (profileData.contact_number) formData.append('contact_number', profileData.contact_number);
+    if (profileData.birthday) formData.append('birthday', profileData.birthday);
+    if (profileData.bio) formData.append('bio', profileData.bio);
+    if (profileData.profile_image) formData.append('profile_image', profileData.profile_image);
+
+    const { data } = await api.patch('/api/users/me/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return data;
   },
 };

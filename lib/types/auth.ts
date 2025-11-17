@@ -6,6 +6,7 @@ export interface User {
   address?: string;
   contact_number?: string;
   birthday?: string;
+  bio?: string;
   profile_image?: string;
 }
 
