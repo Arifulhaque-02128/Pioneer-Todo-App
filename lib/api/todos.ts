@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Todo, CreateTodoDTO, UpdateTodoDTO } from '@/lib/types/todo';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app.pioneeralpha.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const api = axios.create({
   baseURL: API_URL,
