@@ -31,7 +31,7 @@ export default function ProfilePage() {
     }
     }, [user]);
 
-    // console.log('Profile Data:', user);
+    console.log('Profile Data:', user);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

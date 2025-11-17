@@ -10,8 +10,8 @@ export default function SignupPage() {
   const { signup } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -36,7 +36,8 @@ export default function SignupPage() {
 
     setIsSubmitting(true);
     try {
-      await signup(formData);
+      const { confirmPassword, ...signupData } = formData;
+      await signup(signupData);
     } catch (error) {
       console.error('Signup failed:', error);
     } finally {
@@ -71,13 +72,13 @@ export default function SignupPage() {
                   type="text"
                 
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={formData.firstName}
+                  value={formData.first_name}
                   onChange={(e) =>
-                    setFormData({ ...formData, firstName: e.target.value })
+                    setFormData({ ...formData, first_name: e.target.value })
                   }
                 />
-                {errors.firstName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+                {errors.first_name && (
+                  <p className="text-red-500 text-xs mt-1">{errors.first_name}</p>
                 )}
               </div>
 
@@ -87,13 +88,13 @@ export default function SignupPage() {
                   type="text"
                   
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={formData.lastName}
+                  value={formData.last_name}
                   onChange={(e) =>
-                    setFormData({ ...formData, lastName: e.target.value })
+                    setFormData({ ...formData, last_name: e.target.value })
                   }
                 />
-                {errors.lastName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+                {errors.last_name && (
+                  <p className="text-red-500 text-xs mt-1">{errors.last_name}</p>
                 )}
               </div>
             </div>

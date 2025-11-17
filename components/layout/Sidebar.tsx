@@ -6,7 +6,9 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter, usePathname } from 'next/navigation';
 
 export const Sidebar: React.FC = () => {
-  const { user } = useAuth();
+  const { user, 
+    // logout 
+  } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 

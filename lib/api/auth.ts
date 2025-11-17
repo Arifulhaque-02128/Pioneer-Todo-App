@@ -26,12 +26,18 @@ export const authAPI = {
   },
 
   signup: async (userData: SignupDTO): Promise<AuthResponse> => {
-    const { data } = await api.post('/api/users/signup/', userData);
+    const formData = new FormData();
+    formData.append('first_name', userData.first_name);
+    formData.append('last_name', userData.last_name);
+    formData.append('email', userData.email);
+    formData.append('password', userData.password);
+    
+    const { data } = await api.post('/api/users/signup/', formData);
     return data;
   },
 
   logout: async (): Promise<void> => {
-    await api.post('/api/auth/logout');
+    // await api.post('/api/auth/logout');
     localStorage.removeItem('token');
   },
 

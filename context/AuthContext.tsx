@@ -36,6 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loadUser = async () => {
     try {
       const userData = await authAPI.getCurrentUser();
+      console.log("User :::", userData)
       setUser(userData);
     } catch (error) {
       localStorage.removeItem('token');
@@ -63,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    await authAPI.logout();
+    // await authAPI.logout();
     setToken(null);
     setUser(null);
     router.push('/login');

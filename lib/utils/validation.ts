@@ -4,24 +4,24 @@ export interface ValidationError {
 }
 
 export const validateSignup = (data: {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   confirmPassword: string;
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  if (data.firstName.length < 1) {
+  if (data.first_name.length < 1) {
     errors.push({
-      field: 'firstName',
+      field: 'first_name',
       message: 'Please enter a valid name.',
     });
   }
 
-  if (data.firstName.length < 1) {
+  if (data.first_name.length < 1) {
     errors.push({
-      field: 'lastName',
+      field: 'last_name',
       message: 'Please enter a valid name.',
     });
   }
