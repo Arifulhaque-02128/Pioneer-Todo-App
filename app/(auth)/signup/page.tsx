@@ -47,7 +47,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <div className="w-1/2 bg-[#E2ECF8] flex items-center justify-center p-12">
+      <div className="hidden md:flex w-full md:w-1/2 bg-[#E2ECF8] items-center justify-center p-12">
         <div className="max-w-md">
           <img
             src="/images/signup.png"
@@ -57,7 +57,7 @@ export default function SignupPage() {
         </div>
       </div>
 
-      <div className="w-1/2 flex items-center justify-center p-12">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-12">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
             Create your account
@@ -65,7 +65,7 @@ export default function SignupPage() {
           <p className="text-gray-600 mb-8 text-center">Start managing your tasks efficiently</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4 text-black">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4 text-black">
               <div>
                 <label className="block text-sm font-medium mb-2">First Name</label>
                 <input
@@ -165,7 +165,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? 'Signing up...' : 'Sign Up'}
             </button>
@@ -175,7 +175,7 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={() => router.push('/login')}
-                className="text-blue-600 font-medium hover:underline"
+                className="text-blue-600 font-medium hover:underline cursor-pointer"
               >
                 Log in
               </button>

@@ -60,10 +60,10 @@ export default function TodosPage() {
   return (
     <div className="p-8 text-black">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold border-b-2 border-blue-500 pb-2">Todos</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold border-b-2 border-blue-500 pb-2">Todos</h1>
         <button
           onClick={() => setIsCreating(true)}
-          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 cursor-pointer"
+          className="px-4 py-2 md:px-6 md:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 cursor-pointer"
         >
           <Plus size={20} />
           New Task
@@ -79,12 +79,12 @@ export default function TodosPage() {
           <input
             type="text"
             placeholder="Search your task here..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full pl-10 pr-4 py-2 md:py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <button className="px-6 py-3 border border-gray-400 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+        <button className="px-4 py-2 md:px-6 md:py-3 border border-gray-400 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
           Sort by
           <ArrowUpDown size={18} />
         </button>
@@ -117,7 +117,7 @@ export default function TodosPage() {
           {
             filteredTodos.length !== 0 && <h2 className="text-xl font-semibold mb-4">Your Tasks</h2>
           }
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             {filteredTodos.map((todo) => (
               <TodoCard

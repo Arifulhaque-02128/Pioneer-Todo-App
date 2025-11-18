@@ -102,7 +102,7 @@ export default function ProfilePage() {
 
   return (
     <div className="p-8 text-black">
-      <h1 className="text-3xl font-bold mb-8 border-b-2 border-blue-500 pb-2 inline-block">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 border-b-2 border-blue-500 pb-2 inline-block">
         Account Information
       </h1>
 
@@ -119,7 +119,8 @@ export default function ProfilePage() {
       )}
 
       <div className="bg-white rounded-lg p-8 max-w-4xl">
-        <div className="flex items-center gap-6 mb-8 border border-gray-400 rounded-lg p-6 max-w-xl">
+        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 mb-8 border border-gray-400 rounded-lg p-6 max-w-xl">
+
           <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center relative overflow-hidden">
             {previewImage ? (
               <img
@@ -131,6 +132,7 @@ export default function ProfilePage() {
               <User size={40} className="text-gray-400" />
             )}
           </div>
+
           <input
             ref={fileInputRef}
             type="file"
@@ -138,10 +140,11 @@ export default function ProfilePage() {
             onChange={handleImageChange}
             className="hidden"
           />
+
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 cursor-pointer"
           >
             <Upload size={18} />
             Upload New Photo
@@ -149,7 +152,7 @@ export default function ProfilePage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-2">First Name</label>
               <input
@@ -186,7 +189,7 @@ export default function ProfilePage() {
             <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-2">Address</label>
               <input
@@ -215,7 +218,7 @@ export default function ProfilePage() {
             <label className="block text-sm font-medium mb-2">Birthday</label>
             <input
               type="date"
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
               value={formData.birthday}
               onChange={(e) =>
                 setFormData({ ...formData, birthday: e.target.value })
@@ -236,11 +239,11 @@ export default function ProfilePage() {
             />
           </div>
 
-          <div className="flex gap-4 pt-4 justify-center">
+          <div className="grid gap-3 sm:grid-cols-2 pt-2 justify-center">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
@@ -248,7 +251,7 @@ export default function ProfilePage() {
               type="button"
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="px-8 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer disabled:opacity-50"
+              className="px-6 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer disabled:opacity-50"
             >
               Cancel
             </button>

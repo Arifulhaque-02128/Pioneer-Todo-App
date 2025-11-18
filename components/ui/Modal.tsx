@@ -15,8 +15,8 @@ export default function Modal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-xl animate-fadeIn"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md md:max-w-xl animate-fadeIn"
+        onClick={(e) => e.stopPropagation()} 
       >
         {children}
       </div>

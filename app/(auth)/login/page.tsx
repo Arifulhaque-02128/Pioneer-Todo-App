@@ -30,7 +30,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex h-screen bg-gray-50 text-black">
-      <div className="w-1/2 bg-[#E2ECF8] flex items-center justify-center p-12">
+      <div className="hidden md:flex w-full md:w-1/2 bg-[#E2ECF8] items-center justify-center p-12">
         <div className="max-w-md">
           <img
             src="/images/login.png"
@@ -40,7 +40,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="w-1/2 flex items-center justify-center p-12">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-12">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Log in to your account</h1>
           <p className="text-gray-600 mb-8 text-center">Start managing your tasks efficiently</p>
@@ -79,7 +79,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? 'Logging in...' : 'Log In'}
             </button>
@@ -89,7 +89,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => router.push('/signup')}
-                className="text-blue-600 font-medium hover:underline"
+                className="text-blue-600 font-medium hover:underline cursor-pointer"
               >
                 Sign up
               </button>

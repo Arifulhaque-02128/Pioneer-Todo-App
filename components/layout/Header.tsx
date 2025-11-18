@@ -22,10 +22,10 @@ export const Header: React.FC = () => {
         />
       </div>
       <div className="flex items-center gap-4">
-        <button className="p-2 bg-blue-500 rounded-lg transition-colors cursor-pointer">
+        <button className="p-2 bg-blue-500 rounded-lg transition-colors cursor-pointer hidden sm:block">
           <Bell size={20} color='white'/>
         </button>
-        <button className="p-2 bg-blue-500 rounded-lg transition-colors cursor-pointer">
+        <button className="p-2 bg-blue-500 rounded-lg transition-colors cursor-pointer hidden sm:block">
           <Calendar size={20} color='white'/>
         </button>
         <div className="text-right">
