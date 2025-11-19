@@ -1,7 +1,6 @@
 'use client';
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Upload, User } from 'lucide-react';
+import { Upload, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function ProfilePage() {
@@ -82,7 +81,7 @@ export default function ProfilePage() {
   };
 
   const handleCancel = () => {
-    // Reset form to original user data
+    // Reset to original user data
     if (user) {
       setFormData({
         firstName: user.first_name || '',
@@ -101,7 +100,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="p-8 text-black">
+    <div className="p-1 sm:p-8 text-black">
       <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 border-b-2 border-blue-500 pb-2 inline-block">
         Account Information
       </h1>
@@ -243,7 +242,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
@@ -251,7 +250,7 @@ export default function ProfilePage() {
               type="button"
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="px-6 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer disabled:opacity-50"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors cursor-pointer disabled:opacity-50"
             >
               Cancel
             </button>

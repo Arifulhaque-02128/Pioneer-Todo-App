@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { Plus, Search, ArrowUpDown } from 'lucide-react';
 import { useTodos } from '@/lib/hooks/useTodos';
@@ -58,7 +57,7 @@ export default function TodosPage() {
   );
 
   return (
-    <div className="p-8 text-black">
+    <div className="p-2 sm:p-8 text-black">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold border-b-2 border-blue-500 pb-2">Todos</h1>
         <button

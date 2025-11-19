@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { CheckSquare, User, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
